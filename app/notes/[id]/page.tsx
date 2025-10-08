@@ -9,6 +9,9 @@ interface NoteDetailsProps{
 // ----------------------------------------------------------------------
 export default async function NoteDetails({ params }: NoteDetailsProps) {
   const { id } = await params;
+
+  console.log("server id", id);
+  
   
   const queryClient = new QueryClient();
 

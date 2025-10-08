@@ -24,25 +24,28 @@ export default function NoteList({ notes }: NoteListProps) {
     },
   });
 
-  function handleDelete(noteId:string) {
+  function handleDelete(noteId: string) {
     mutation.mutate(noteId);
   }
 
   return (
     <ul className={styles.list}>
       {notes.map(item => (
-      <li key={item.id} className={styles.listItem}>
-        <h2 className={styles.title}>{item.title}</h2>
-        <p className={styles.content}>{item.content}</p>
-        <div className={styles.footer}>
-        <span className={styles.tag}>{item.tag}</span>
-        <Link href={`./notes/${item.id}`}>View details</Link>
-        <button
-          className={styles.button}
-          onClick={() => handleDelete(item.id)}>
-          Delete</button>
-        </div>
-      </li>
+        <li key={item.id} className={styles.listItem}>
+          <h2 className={styles.title}>{item.title}</h2>
+          <p className={styles.content}>{item.content}</p>
+          <div className={styles.footer}>
+            <span className={styles.tag}>{item.tag}</span>
+            <Link href={`/notes/${item.id}`} className={styles.link}>
+              View details
+            </Link>
+            <button
+              className={styles.button}
+              onClick={() => handleDelete(item.id)}>
+              Delete
+            </button>
+          </div>
+        </li>
       ))}
     </ul>
   );

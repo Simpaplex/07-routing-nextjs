@@ -3,6 +3,7 @@ import type { CreateNoteRequest, Note } from '../types/note';
 
 axios.defaults.baseURL = "https://notehub-public.goit.study/api";
 
+
 const myToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
 
 interface FetchNotesResponce {
@@ -10,8 +11,8 @@ interface FetchNotesResponce {
   totalPages: number;
 }
 
-async function fetchNotes(searchValue: string, currentPage: number) {
-  const responce = await axios.get<FetchNotesResponce>("/notes", {
+async function fetchNotes(searchValue: string, currentPage: number, noteTag?:string) {
+  const responce = await axios.get<FetchNotesResponce>('/notes', {
     headers: {
       Authorization: `Bearer ${myToken}`,
     },
@@ -19,6 +20,7 @@ async function fetchNotes(searchValue: string, currentPage: number) {
       search: searchValue,
       page: currentPage,
       perPage: 12,
+      tag: noteTag,
     },
   });
 
@@ -50,8 +52,10 @@ async function fetchNoteById(noteId: string) {
       Authorization: `Bearer ${myToken}`,
     },
   });
-
+  
   return responce.data;
 }
 
-export { fetchNotes, createNote, deleteNote, fetchNoteById };
+
+export {
+  fetchNotes, createNote, deleteNote, fetchNoteById};

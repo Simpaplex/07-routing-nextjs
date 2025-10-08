@@ -1,20 +1,23 @@
-'use client'
+'use client';
 
-import Modal from "@/components/Modal/Modal";
-import NoteList from "@/components/NoteList/NoteList";
-import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import styles from './NotesPage.module.css'
-import SearchBox from "@/components/SearchBox/SearchBox";
-import { useState } from "react";
-import { fetchNotes } from "@/lib/api";
-import Pagination from "@/components/Pagination/Pagination";
-import { useDebouncedCallback } from "use-debounce";
-import NoteForm from "@/components/NoteForm/NoteForm";
-import { Toaster } from "react-hot-toast";
-import Loader from "@/components/Loader/Loader";
+import Modal from '@/components/Modal/Modal';
+import NoteList from '@/components/NoteList/NoteList';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import styles from './NotesPage.module.css';
+import SearchBox from '@/components/SearchBox/SearchBox';
+import { useState } from 'react';
+import { fetchNotes } from '@/lib/api';
+import Pagination from '@/components/Pagination/Pagination';
+import { useDebouncedCallback } from 'use-debounce';
+import NoteForm from '@/components/NoteForm/NoteForm';
+import { Toaster } from 'react-hot-toast';
+import Loader from '@/components/Loader/Loader';
 
+interface NotesClientProps {
+  noteTag: string | undefined;
+}
 
-export default function NotesClient() {
+export default function NotesClient({ noteTag }: NotesClientProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -22,19 +25,21 @@ export default function NotesClient() {
   const [currentPage, setCurrentPage] = useState(1);
   const [searchValue, setSearchValue] = useState('');
 
-  const { data, isLoading, isError, isSuccess } = useQuery({
-    queryKey: ['notesList', searchValue, currentPage],
-    queryFn: () => fetchNotes(searchValue, currentPage),
+  const { data, isLoading, isError, isSuccess, error } = useQuery({
+    queryKey: ['notesList', searchValue, currentPage, noteTag],
+    queryFn: () => fetchNotes(searchValue, currentPage, noteTag),
     refetchOnMount: false,
     placeholderData: keepPreviousData,
   });
 
   const handleChange = useDebouncedCallback(
-(event: React.ChangeEvent<HTMLInputElement>) => {
-setSearchValue(event.target.value);
-setCurrentPage(1);
-}, 500);
-  
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      setSearchValue(event.target.value);
+      setCurrentPage(1);
+    },
+    500
+  );
+
   return (
     <div className={styles.app}>
       <header className={styles.toolbar}>
@@ -62,7 +67,7 @@ setCurrentPage(1);
           <h2>Sorry, notes not found...</h2>
         ))}
 
-      {isError && <h2>Somethings wrong</h2>}
+      {isError && <h2>Somethings wrong. {error.message}</h2>}
 
       {isLoading && <Loader />}
 

@@ -8,7 +8,10 @@ import { useParams } from 'next/navigation';
 export default function NoteDetailsClient() {
   const { id } = useParams<{ id: string }>();
 
-  const { data, isError, isLoading } = useQuery({
+  console.log('client id', id);
+  
+
+  const { data, isError, isLoading, error } = useQuery({
     queryKey: ['note', id],
     queryFn: () => fetchNoteById(id),
     refetchOnMount: false,
@@ -25,7 +28,7 @@ export default function NoteDetailsClient() {
           <p className={styles.date}>Created date: {data?.createdAt}</p>
         </>
       )}
-      {isError && <p>Something went wrong.</p>}
+      {isError && <p>Something went wrong.{error.message}</p>}
       {isLoading && <p>Loading note, please wait...</p>}
     </>
   );
