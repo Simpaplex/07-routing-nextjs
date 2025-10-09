@@ -17,7 +17,7 @@ export default async function Notes({ params }: notesProps) {
   const { slug } = await params;
   const [tag] = slug;
 
-  const noteTag = tag === 'all' ? undefined : tag;
+  const noteTag = tag === 'All' ? undefined : tag;
 
   const searchValue: string = '';
   const currentPage: number = 1;

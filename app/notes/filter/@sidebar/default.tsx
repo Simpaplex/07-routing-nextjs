@@ -8,7 +8,7 @@ const SidebarNotes = () => {
   return (
     <ul className={styles.menuList}>
       <li className={styles.menuItem}>
-        <Link href={'/notes/filter/all'} className={styles.menuLink}>
+        <Link href={'/notes/filter/All'} className={styles.menuLink}>
           All notes
         </Link>
       </li>

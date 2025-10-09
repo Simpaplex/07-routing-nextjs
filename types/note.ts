@@ -17,5 +17,5 @@ export type NoteTag =
 export interface CreateNoteRequest {
   title: string;
   content: string;
-  tag: string;
+  tag: NoteTag;
 }
